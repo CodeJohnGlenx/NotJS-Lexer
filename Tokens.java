@@ -1,6 +1,8 @@
 import java.util.Hashtable;
 
 public class Tokens {
+
+    // list of regular expressions
     public static final String[] PATTERNLIST = {
         // comments
         "^#.*",  // SINGLE_LINE_COMMENT
@@ -103,6 +105,7 @@ public class Tokens {
         "^[_a-zA-Z]+\\w*",  // IDENTIFIER
     };
 
+    // Token equivalent of regular expression
     public static final Hashtable<String, String> TOKEN = new Hashtable<String, String>() {{
         // data types
         put("^String", "STRING_TYPE");
