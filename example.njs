@@ -21,3 +21,4 @@ switch (_isLegalAge) {
     default:
        output("can't recognize");
 }
+,,

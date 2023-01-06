@@ -98,6 +98,7 @@ public class Tokens {
         "^[?]",  // QUESTION_MARK
         "^\\[",  // LEFT_SQUARE_BRACKET
         "^\\]",  // RIGHT_SQUARE_BRACKET
+        "^[,]",  // COMMA
 
         // whitespace
         "^\\s+", // WHITESPACE
@@ -198,6 +199,7 @@ public class Tokens {
         put("^[?]", "QUESTION_MARK");
         put("^\\[", "LEFT_SQUARE_BRACKET");
         put("^\\]", "RIGHT_SQUARE_BRACKET");
+        put("^[,]", "COMMA");
 
         // whitespace
         put("^\\s+", "WHITESPACE");
