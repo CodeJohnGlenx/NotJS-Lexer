@@ -46,7 +46,7 @@ public class Tokens {
         "^final",  // FINAL
 
         // literals
-        "^\".*\"",  // STRING_LITERAL
+        "^(\"[^\"]*\")",  // STRING_LITERAL
         "^'.'",  // CHAR_LITERAL
         "^([0-9]+([.][0-9]*)|^([0-9]*[.][0-9]+))",  // FLOAT_LITERAL
         "^[0-9]+",  // INT_LITERAL
@@ -147,7 +147,7 @@ public class Tokens {
         put("^final", "FINAL");
         
         // literals
-        put("^\".*\"", "STRING_LITERAL");
+        put("^(\"[^\"]*\")", "STRING_LITERAL");
         put("^'.'", "CHAR_LITERAL");
         put("^[0-9]+", "INT_LITERAL");
         put("^([0-9]+([.][0-9]*)|^([0-9]*[.][0-9]+))", "FLOAT_LITERAL");
