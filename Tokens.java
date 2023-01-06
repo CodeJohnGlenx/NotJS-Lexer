@@ -37,6 +37,7 @@ public class Tokens {
         "^finally",   // FINALLY
         "^break",  // BREAK
         "^default",  // DEFAULT
+        "^case",  // CASE
 
         // reserved words
         "^var",  // VAR
@@ -136,6 +137,7 @@ public class Tokens {
         put("^finally", "FINALLY");
         put("^break", "BREAK");
         put("^default", "DEFAULT");
+        put("^case",  "CASE");
 
         // reserved words
         put("^var", "VAR");

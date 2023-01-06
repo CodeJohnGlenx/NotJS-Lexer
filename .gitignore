@@ -1,4 +1,5 @@
-*.njs
-*.txt
+myfile.njs
+njstest.njs
 Test.class
 Test.java
+!example.js
