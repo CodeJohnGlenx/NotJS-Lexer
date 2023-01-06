@@ -2,26 +2,52 @@ import java.util.Hashtable;
 
 public class Tokens {
     public static final String[] PATTERNLIST = {
+        // comments
+        "^#.*",  // SINGLE_LINE_COMMENT
+        "^'''(.|[\r\n]|)*?'''",  // MULTI_LINE_COMMENT
+
         // data types
         "^String",  // STRING_TYPE
         "^int",  // INT_TYPE
         "^char",  // CHAR_TYPE
         "^float",  // FLOAT_TYPE
-        //"^double",  // DOUBLE_TYPE
         "^bool",   // BOOL_TYPE
 
-        // keywords
+        // reserved word (for now)
+        "^double",  // DOUBLE_TYPE
 
+        // keywords
+        "^input",  // INPUT
+        "^in",  // IN
+        "^not",  // NOT
+        "^try",  // TRY
+        "^except",  // EXCEPT
+        "^return",  // RETURN
+        "elif",  // ELSE_IF
+        "^else",  // ELSE
+        "^if",  // IF
+        "^for",  // FOR
+        "^do",  // DO
+        "^while",  // WHILE
+        "^output",  // OUTPUT
+        "^switch",  // SWITCH
+        "^continue",  // CONTINUE
+        "^finally",   // FINALLY
+        "^break",  // BREAK
+        "^default",  // DEFAULT
 
         // reserved words
-        "^[_a-zA-Z]+\\w*",  // IDENTIFIER
+        "^var",  // VAR
+        "^let",  // LET
+        "^const",  // CONST
+        "^final",  // FINAL
 
         // literals
         "^\".*\"",  // STRING_LITERAL
         "^'.'",  // CHAR_LITERAL
-        "^([0-9]+([.][0-9]*)|([0-9]*[.][0-9]+))",  // FLOAT_LITERAL
+        "^([0-9]+([.][0-9]*)|^([0-9]*[.][0-9]+))",  // FLOAT_LITERAL
         "^[0-9]+",  // INT_LITERAL
-        "^true|false",  // BOOL_LITERAL
+        "^(true)|^(false)",  // BOOL_LITERAL
 
         // relational operators 
         "^[=][=]",  // EQUAL_TO
@@ -36,6 +62,10 @@ public class Tokens {
         "^[&][&]",  // AND
         "^[|][|]",  // OR
         
+        // unary operators
+        "^[+][+]",  // INCREMENT
+        "^[-][-]",  // DECREMENT
+
         // assignment operators 
         "^=",  // ASSIGNMENT
         "^[+]=",  // ADDITION_ASSIGNMENT
@@ -56,9 +86,21 @@ public class Tokens {
         "^%",  // MODULUS
 
         // punctuations
-        "^;", // SEMICOLON
+        "^[;]", // SEMICOLON
+        "^[:]",  // COLON
+        "^[(]",  // LEFT_PARENTHESIS
+        "^[)]",  // RIGHT_PARENTHESIS
+        "^[{]",  // LEFT_CURLY_BRACKET
+        "^[}]",  // RIGHT_CURLY_BRACKET
+        "^[?]",  // QUESTION_MARK
+        "^\\[",  // LEFT_SQUARE_BRACKET
+        "^\\]",  // RIGHT_SQUARE_BRACKET
 
+        // whitespace
         "^\\s+", // WHITESPACE
+
+        // identifier
+        "^[_a-zA-Z]+\\w*",  // IDENTIFIER
     };
 
     public static final Hashtable<String, String> TOKEN = new Hashtable<String, String>() {{
@@ -69,14 +111,41 @@ public class Tokens {
         put("^float", "FLOAT_TYPE");
         put("^bool", "BOOL_TYPE");
 
-        put("^[_a-zA-Z]+\\w*", "IDENTIFIER");
+        // reserved word (for now)
+        put("^double", "DOUBLE_TYPE");
 
+        // keywords
+        put("^input", "INPUT");
+        put("^in", "IN");
+        put("^not", "NOT");
+        put("^try", "TRY");
+        put("^except", "EXCEPT");
+        put("^return", "RETURN");
+        put("elif", "ELSE_IF");
+        put("^else", "ELSE");
+        put("^if", "IF");
+        put("^for", "FOR");
+        put("^do", "DO");
+        put("^while", "WHILE");
+        put("^output", "OUTPUT");
+        put("^switch", "SWITCH");
+        put("^continue", "CONTINUE");
+        put("^finally", "FINALLY");
+        put("^break", "BREAK");
+        put("^default", "DEFAULT");
+
+        // reserved words
+        put("^var", "VAR");
+        put("^let", "LET");
+        put("^const", "CONST");
+        put("^final", "FINAL");
+        
         // literals
         put("^\".*\"", "STRING_LITERAL");
         put("^'.'", "CHAR_LITERAL");
         put("^[0-9]+", "INT_LITERAL");
-        put("^([0-9]+([.][0-9]*)|([0-9]*[.][0-9]+))", "FLOAT_LITERAL");
-        put("^true|false", "BOOL_LITERAL");
+        put("^([0-9]+([.][0-9]*)|^([0-9]*[.][0-9]+))", "FLOAT_LITERAL");
+        put("^(true)|^(false)", "BOOL_LITERAL");
 
         // relational operators
         put("^[=][=]", "EQUAL_TO");
@@ -90,6 +159,10 @@ public class Tokens {
         put("^[!]", "NOT");
         put("^[&][&]", "AND");
         put("^[|][|]", "OR");
+
+        //  unary operators
+        put("^[+][+]", "INCREMENT");
+        put("^[-][-]", "DECREMENT");
 
         // assignment operators
         put("^[+]=", "ADDITION_ASSIGNMENT");
@@ -111,9 +184,25 @@ public class Tokens {
         put("^%", "MODULUS");  
         
         // punctuations
-        put("^;", "SEMICOLON");
+        put("^[;]", "SEMICOLON");
+        put("^[:]", "COLON");
+        put("^[(]", "LEFT_PARENTHESIS");
+        put("^[)]", "RIGHT_PARENTHESIS");
+        put("^[{]", "LEFT_CURLY_BRACKET");
+        put("^[}]", "RIGHT_CURLY_BRACKET");
+        put("^[?]", "QUESTION_MARK");
+        put("^\\[", "LEFT_SQUARE_BRACKET");
+        put("^\\]", "RIGHT_SQUARE_BRACKET");
 
+        // whitespace
         put("^\\s+", "WHITESPACE");
+
+        // comments
+        put("^#.*", "SINGLE_LINE_COMMENT");
+        put("^'''(.|[\r\n]|)*?'''",  "MULTI_LINE_COMMENT");
+
+        // identifier
+        put("^[_a-zA-Z]+\\w*", "IDENTIFIER");
     }};
 }
 
