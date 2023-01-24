@@ -164,8 +164,3 @@ public class Lex {
     }
 }
 
-/*
-TO DO:
-* Make a condition that only accepts .njs file 
-* Fix Identifier-Other type problem
-*/
