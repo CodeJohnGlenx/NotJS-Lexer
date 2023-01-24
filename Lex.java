@@ -83,8 +83,65 @@ public class Lex {
                 // lexeme belongs to other form of token (e.g. semicolon/increment/int_literal etc.)
                 if (matcher.find(0) == true) {
                     if (Tokens.TOKEN.get(p) != "WHITESPACE" && Tokens.TOKEN.get(p) != "SINGLE_LINE_COMMENT" && Tokens.TOKEN.get(p) != "MULTI_LINE_COMMENT") {
-                        System.out.printf("%-50s%s\n", content.substring(matcher.start(), matcher.end()), Tokens.TOKEN.get(p));
-                        lexemeTokenList.add(new String[] {content.substring(matcher.start(), matcher.end()), Tokens.TOKEN.get(p)});
+                        // break down STRING_LITERAL into different tokens
+                        if (Tokens.TOKEN.get(p) == "STRING_LITERAL") {
+                            System.out.printf("%-50s%s\n", "\"", Tokens.STRTOKENS.get("open_quote"));
+                            lexemeTokenList.add(new String[] {"\"", Tokens.STRTOKENS.get("open_quote")});
+
+                            String strContent = content.substring(matcher.start(), matcher.end());
+                            if (strContent.length() > 2) {
+                                strContent = strContent.substring(1, strContent.length()-1);
+                                while (!strContent.isEmpty()) {
+                                    for (String s: Tokens.STRPATTERNLIST) {
+                                        Pattern strPattern = Pattern.compile(s);
+                                        Matcher strMatcher = strPattern.matcher(strContent);
+    
+                                        if (strMatcher.find(0) == true) {
+                                            System.out.printf("%-50s%s\n", strContent.substring(strMatcher.start(), strMatcher.end()), Tokens.STRTOKENS.get(s));
+                                            lexemeTokenList.add(new String[] {strContent.substring(strMatcher.start(), strMatcher.end()), Tokens.STRTOKENS.get(s)});
+                                            strContent = strContent.substring(strMatcher.end());
+                                            break;
+                                        } else {
+                                        }
+                                    }
+                                }
+                            }
+
+                            System.out.printf("%-50s%s\n", "\"", Tokens.STRTOKENS.get("close_quote"));
+                            lexemeTokenList.add(new String[] {"\"", Tokens.STRTOKENS.get("close_quote")});
+
+                        // break down CHAR_LITERAL into different tokens
+                        } else  if (Tokens.TOKEN.get(p) == "CHAR_LITERAL") {
+                            System.out.printf("%-50s%s\n", "\'", Tokens.CHARTOKENS.get("open_quote"));
+                            lexemeTokenList.add(new String[] {"\'", Tokens.CHARTOKENS.get("open_quote")});
+                        
+                            String charContent = content.substring(matcher.start(), matcher.end());
+                            if (charContent.length() > 2) {
+                                charContent = charContent.substring(1, charContent.length()-1);
+                                while (!charContent.isEmpty()) {
+                                    for (String s: Tokens.CHARPATTERNLIST) {
+                                        Pattern charPattern = Pattern.compile(s);
+                                        Matcher charMatcher = charPattern.matcher(charContent);
+                        
+                                        if (charMatcher.find(0) == true) {
+                                            System.out.printf("%-50s%s\n", charContent.substring(charMatcher.start(), charMatcher.end()), Tokens.CHARTOKENS.get(s));
+                                            lexemeTokenList.add(new String[] {charContent.substring(charMatcher.start(), charMatcher.end()), Tokens.CHARTOKENS.get(s)});
+                                            charContent = charContent.substring(charMatcher.end());
+                                            break;
+                                        } else {
+                                        }
+                                    }
+                                }
+                            }
+                        
+                            System.out.printf("%-50s%s\n", "\'", Tokens.CHARTOKENS.get("close_quote"));
+                            lexemeTokenList.add(new String[] {"\'", Tokens.CHARTOKENS.get("close_quote")});
+                        }
+                        
+                        else {
+                            System.out.printf("%-50s%s\n", content.substring(matcher.start(), matcher.end()), Tokens.TOKEN.get(p));
+                            lexemeTokenList.add(new String[] {content.substring(matcher.start(), matcher.end()), Tokens.TOKEN.get(p)});
+                        }
                     }
                     content = content.substring(matcher.end());
                     found = true;
