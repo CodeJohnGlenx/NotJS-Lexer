@@ -25,7 +25,7 @@ public class Tokens {
         "^try",  // KEYWORD
         "^except",  // KEYWORD
         "^return",  // KEYWORD
-        "elif",  // KEYWORD
+        "^elif",  // KEYWORD
         "^else",  // KEYWORD
         "^if",  // KEYWORD
         "^for",  // KEYWORD
@@ -39,6 +39,9 @@ public class Tokens {
         "^default",  // KEYWORD
         "^case",  // KEYWORD
         "^final",  // KEYWORD
+        "^void",  // KEYWORD
+        "^main",  // KEYWORD
+        
 
         // reserved words
         "^var",  // RESERVED_WORD
@@ -46,7 +49,7 @@ public class Tokens {
         "^const",  // RESERVED_WORD
 
         // literals
-        "^(\"[^\"\\\\]*(?:\\\\.[^\"\\\\]*)*\")",  // STRING_LITERAL
+        "^\"([^\r\n\"\\\\]*(?:\\\\.[^\n\r\"\\\\]*)*)\"",  // STRING_LITERAL
         "^('\\\\'')|^('([^']|\\\\n|\\\\t)')",  // CHAR_LITERAL
         "^([0-9]+([.][0-9]*)|^([0-9]*[.][0-9]+))",  // FLOAT_LITERAL
         "^[0-9]+",  // INT_LITERAL
@@ -126,7 +129,7 @@ public class Tokens {
         put("^try", "KEYWORD");
         put("^except", "KEYWORD");
         put("^return", "KEYWORD");
-        put("elif", "KEYWORD");
+        put("^elif", "KEYWORD");
         put("^else", "KEYWORD");
         put("^if", "KEYWORD");
         put("^for", "KEYWORD");
@@ -140,6 +143,8 @@ public class Tokens {
         put("^default", "KEYWORD");
         put("^case",  "KEYWORD");
         put("^final", "KEYWORD");
+        put("^void", "KEYWORD");
+        put("^main", "KEYWORD");
 
         // reserved words
         put("^var", "RESERVED_WORD");
@@ -148,7 +153,7 @@ public class Tokens {
         
         // literals
         // "^(\"[^\"]*\")"
-        put("^(\"[^\"\\\\]*(?:\\\\.[^\"\\\\]*)*\")", "STRING_LITERAL");
+        put("^\"([^\r\n\"\\\\]*(?:\\\\.[^\n\r\"\\\\]*)*)\"", "STRING_LITERAL");
         put("^('\\\\'')|^('([^']|\\\\n|\\\\t)')", "CHAR_LITERAL");
         put("^[0-9]+", "INT_LITERAL");
         put("^([0-9]+([.][0-9]*)|^([0-9]*[.][0-9]+))", "FLOAT_LITERAL");
@@ -246,10 +251,15 @@ public class Tokens {
     }};
 
 
-    public static final String[] SCOMMENTPATTERNLIST = {
-        "^#",  // SINGLE_COMMENT_DEL
+    public static final String[] SINGLECOMMENTPATTERNLIST = {
+        "^#",  // SINGLE_LINE_COMMENT_DEL
         "^.*",  // STRING_LITERAL
     };
+
+    public static final Hashtable<String, String> SINGLECOMMENTTOKENS = new Hashtable<String, String>() {{
+        put("^#", "SINGLE_LINE_COMMENT_DEL");
+        put("^.*", "STRING_LITERAL");
+    }};
 }
 
 

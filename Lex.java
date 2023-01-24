@@ -82,7 +82,7 @@ public class Lex {
 
                 // lexeme belongs to other form of token (e.g. semicolon/increment/int_literal etc.)
                 if (matcher.find(0) == true) {
-                    if (Tokens.TOKEN.get(p) != "WHITESPACE" && Tokens.TOKEN.get(p) != "MULTI_LINE_COMMENT") {
+                    if (Tokens.TOKEN.get(p) != "WHITESPACE" && Tokens.TOKEN.get(p) != "MULTI_LINE_COMMENT" && Tokens.TOKEN.get(p) != "SINGLE_LINE_COMMENT") {
                         // break down STRING_LITERAL into different tokens
                         if (Tokens.TOKEN.get(p) == "STRING_LITERAL") {
                             System.out.printf("%-50s%s\n", "\"", Tokens.STRTOKENS.get("open_quote"));
