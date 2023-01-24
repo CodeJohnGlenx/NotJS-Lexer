@@ -2,6 +2,7 @@ import java.util.regex.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.io.FileWriter;
 
 public class Lex {
@@ -42,7 +43,8 @@ public class Lex {
     public static ArrayList<String[]> scan(String content, String[] patternList) {
         Pattern pattern;
         Matcher matcher;
-        ArrayList<String[]> lexemeTokenList = new ArrayList<>();
+        ArrayList<String[]> lexemeTokenList = new ArrayList<>();  // <lexeme, token>
+        Hashtable<String, String> constantList = new Hashtable<>(); 
 
         // identiferPattern and identifierMatcher for special cases
         Pattern identifierPattern = Pattern.compile("^[_a-zA-Z]+\\w*");
@@ -64,17 +66,59 @@ public class Lex {
                 if (identifierMatcher.find(0) == true && matcher.find(0) == true) {
                     String identifierSubString = content.substring(identifierMatcher.start(), identifierMatcher.end());
                     String matcherSubString = content.substring(matcher.start(), matcher.end());
+                    String equivalentToken = Tokens.TOKEN.get(p);
 
+                    // CONSTANT
+                    if (equivalentToken.equals("IDENTIFIER")) {
+                        if (lexemeTokenList.size() >= 2) {
+                            int lastIndex = lexemeTokenList.size() - 1;
+                            String[] lexTokenLast = lexemeTokenList.get(lastIndex);  // assert that this is datatype
+                            String[] lexTokenSecondLast = lexemeTokenList.get(lastIndex - 1);   // assert that this is final keyword
+    
+                            // identifier must be constant if the last two tokens are <keyword (final)> <datatype>
+                            if (lexTokenLast[1].equals("DATATYPE") 
+                            && lexTokenSecondLast[0].equals("final") && 
+                            equivalentToken.equals("IDENTIFIER")) {
+                                equivalentToken = Tokens.TOKEN.get("constant");
+                            } 
+                        } 
+                    }
+                    
                     // lexeme is a (keyword/reserved_word/bool_literal)
                     if (identifierSubString.equals(matcherSubString)) {
-                        System.out.printf("%-50s%s\n", content.substring(matcher.start(), matcher.end()), Tokens.TOKEN.get(p));
-                        lexemeTokenList.add(new String[] {content.substring(matcher.start(), matcher.end()), Tokens.TOKEN.get(p)});
+                        if (lexemeTokenList.size() >= 1) {
+                            int lastIndex = lexemeTokenList.size() - 1;
+                            String[] lexTokenLast = lexemeTokenList.get(lastIndex);  // assert that this is datatype
+
+                            // change identifier/constant to reserved_word if lexeme is a keyword/bool_literal/datatype
+                            if (lexTokenLast[1].equals("DATATYPE") &&
+                            (!equivalentToken.equals("IDENTIFIER") && 
+                            !equivalentToken.equals("CONSTANT"))) {
+                                equivalentToken = Tokens.TOKEN.get("reserved");
+                            } 
+                        }
+
+                        // replace identifier with constant if there is an existing constant for the current lexeme identifier
+                        if (constantList.get(identifierSubString) != null) {
+                            equivalentToken = Tokens.TOKEN.get("constant");
+                        } 
+
+                        System.out.printf("%-50s%s\n", content.substring(matcher.start(), matcher.end()), equivalentToken);
+                        lexemeTokenList.add(new String[] {content.substring(matcher.start(), matcher.end()), equivalentToken});
                         content = content.substring(matcher.end());
                     // lexeme is an identifier
+                    // not reachable?
                     } else {
-                        System.out.printf("%-50s%s\n", content.substring(identifierMatcher.start(), identifierMatcher.end()), Tokens.TOKEN.get(identifierPattern.pattern()));
-                        lexemeTokenList.add(new String[] {content.substring(identifierMatcher.start(), identifierMatcher.end()), Tokens.TOKEN.get(identifierPattern.pattern())});
+
+                        String identifierToken = Tokens.TOKEN.get(identifierPattern.pattern());
+                        System.out.printf("%-50s%s\n", content.substring(identifierMatcher.start(), identifierMatcher.end()), identifierToken);
+                        // 
+                        lexemeTokenList.add(new String[] {content.substring(identifierMatcher.start(), identifierMatcher.end()), identifierToken});
                         content = content.substring(identifierMatcher.end());
+                    }
+
+                    if (equivalentToken.equals("CONSTANT")) {
+                        constantList.put(identifierSubString, equivalentToken);
                     }
                     found = true;
                     break;
@@ -82,7 +126,8 @@ public class Lex {
 
                 // lexeme belongs to other form of token (e.g. semicolon/increment/int_literal etc.)
                 if (matcher.find(0) == true) {
-                    if (Tokens.TOKEN.get(p) != "WHITESPACE" && Tokens.TOKEN.get(p) != "MULTI_LINE_COMMENT" && Tokens.TOKEN.get(p) != "SINGLE_LINE_COMMENT") {
+                    if (Tokens.TOKEN.get(p) != "WHITESPACE") {
+
                         // break down STRING_LITERAL into different tokens
                         if (Tokens.TOKEN.get(p) == "STRING_LITERAL") {
                             System.out.printf("%-50s%s\n", "\"", Tokens.STRTOKENS.get("open_quote"));
@@ -136,11 +181,61 @@ public class Lex {
                         
                             System.out.printf("%-50s%s\n", "\'", Tokens.CHARTOKENS.get("close_quote"));
                             lexemeTokenList.add(new String[] {"\'", Tokens.CHARTOKENS.get("close_quote")});
+                        } 
+
+                        // break down single line comment 
+                        else if (Tokens.TOKEN.get(p) == "SINGLE_LINE_COMMENT") {
+                            System.out.printf("%-50s%s\n", "#", Tokens.SINGLECOMMENTTOKENS.get("comment"));
+                            lexemeTokenList.add(new String[] {"#", Tokens.SINGLECOMMENTTOKENS.get("comment")});
+                            String commentStr = content.substring(matcher.start() + 1, matcher.end());
+
+                            while (!commentStr.isEmpty()) {
+                                for (String s: Tokens.SINGLECOMMENTPATTERNLIST) {
+                                    Pattern commentPattern = Pattern.compile(s);
+                                    Matcher commentMatcher = commentPattern.matcher(commentStr);
+                    
+                                    if (commentMatcher.find(0) == true) {
+                                        System.out.printf("%-50s%s\n", commentStr.substring(commentMatcher.start(), commentMatcher.end()), Tokens.SINGLECOMMENTTOKENS.get(s));
+                                        lexemeTokenList.add(new String[] {commentStr.substring(commentMatcher.start(), commentMatcher.end()), Tokens.SINGLECOMMENTTOKENS.get(s)});
+                                        commentStr = commentStr.substring(commentMatcher.end());
+                                        break;
+                                    } else {
+                                    }
+                                }
+                            }
+                        }
+
+                        // break down multi line comment 
+                        else if (Tokens.TOKEN.get(p) == "MULTI_LINE_COMMENT") {
+                            System.out.printf("%-50s%s\n", "'''", Tokens.MULTICOMMENTTOKENS.get("open_multi"));
+                            lexemeTokenList.add(new String[] {"'''", Tokens.MULTICOMMENTTOKENS.get("open_multi")});
+                            String commentStr = content.substring(matcher.start() + 3, matcher.end() - 3);
+                            
+                            while (!commentStr.isEmpty()) {
+                                for (String s: Tokens.MULTICOMMENTPATTERNLIST) {
+                                    Pattern commentPattern = Pattern.compile(s);
+                                    Matcher commentMatcher = commentPattern.matcher(commentStr);
+                                    if (commentMatcher.find(0) == true) {
+                                        if (Tokens.MULTICOMMENTTOKENS.get(s) != "NEWLINE") {
+                                            System.out.printf("%-50s%s\n", commentStr.substring(commentMatcher.start(), commentMatcher.end()), Tokens.MULTICOMMENTTOKENS.get(s));
+                                            lexemeTokenList.add(new String[] {commentStr.substring(commentMatcher.start(), commentMatcher.end()), Tokens.MULTICOMMENTTOKENS.get(s)});
+                                        }
+                                        commentStr = commentStr.substring(commentMatcher.end());
+                                        break;
+                                    }
+
+                                }
+                            }
+
+
+                            System.out.printf("%-50s%s\n", "'''", Tokens.MULTICOMMENTTOKENS.get("close_multi"));
+                            lexemeTokenList.add(new String[] {"'''", Tokens.MULTICOMMENTTOKENS.get("close_multi")});
                         }
                         
                         else {
-                            System.out.printf("%-50s%s\n", content.substring(matcher.start(), matcher.end()), Tokens.TOKEN.get(p));
-                            lexemeTokenList.add(new String[] {content.substring(matcher.start(), matcher.end()), Tokens.TOKEN.get(p)});
+                            String equivalentToken = Tokens.TOKEN.get(p);
+                            System.out.printf("%-50s%s\n", content.substring(matcher.start(), matcher.end()), equivalentToken);
+                            lexemeTokenList.add(new String[] {content.substring(matcher.start(), matcher.end()), equivalentToken});
                         }
                     }
                     content = content.substring(matcher.end());

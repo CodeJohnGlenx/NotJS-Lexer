@@ -94,13 +94,13 @@ public class Tokens {
         // punctuations
         "^[;]", // SEMICOLON_DEL
         "^[:]",  // COLON_DEL
-        "^[(]",  // LEFT_PARENTHESIS
-        "^[)]",  // RIGHT_PARENTHESIS
-        "^[{]",  // LEFT_CURLY_BRACKET
-        "^[}]",  // RIGHT_CURLY_BRACKET
+        "^[(]",  // OPEN_PARENTHESIS
+        "^[)]",  // CLOSE_PARENTHESIS
+        "^[{]",  // OPEN_CURLY_BRACKET
+        "^[}]",  // CLOSE_CURLY_BRACKET
         "^[?]",  // TERNARY_OP
-        "^\\[",  // LEFT_SQUARE_BRACKET
-        "^\\]",  // RIGHT_SQUARE_BRACKET
+        "^\\[",  // OPEN_SQUARE_BRACKET
+        "^\\]",  // CLOSE_SQUARE_BRACKET
         "^[,]",  // COMMA_DEL
 
         // whitespace
@@ -145,6 +145,10 @@ public class Tokens {
         put("^final", "KEYWORD");
         put("^void", "KEYWORD");
         put("^main", "KEYWORD");
+
+        // constant and reserved_word
+        put("constant", "CONSTANT");
+        put("reserved", "RESERVED_WORD");
 
         // reserved words
         put("^var", "RESERVED_WORD");
@@ -198,13 +202,13 @@ public class Tokens {
         // punctuations
         put("^[;]", "SEMICOLON_DEL");
         put("^[:]", "COLON_DEL");
-        put("^[(]", "LEFT_PARENTHESIS");
-        put("^[)]", "RIGHT_PARENTHESIS");
-        put("^[{]", "LEFT_CURLY_BRACKET");
-        put("^[}]", "RIGHT_CURLY_BRACKET");
+        put("^[(]", "OPEN_PARENTHESIS");
+        put("^[)]", "CLOSE_PARENTHESIS");
+        put("^[{]", "OPEN_CURLY_BRACKET");
+        put("^[}]", "CLOSE_CURLY_BRACKET");
         put("^[?]", "TERNARY_OP");
-        put("^\\[", "LEFT_SQUARE_BRACKET");
-        put("^\\]", "RIGHT_SQUARE_BRACKET");
+        put("^\\[", "OPEN_SQUARE_BRACKET");
+        put("^\\]", "CLOSE_SQUARE_BRACKET");
         put("^[,]", "COMMA_DEL");
 
         // whitespace
@@ -252,13 +256,25 @@ public class Tokens {
 
 
     public static final String[] SINGLECOMMENTPATTERNLIST = {
-        "^#",  // SINGLE_LINE_COMMENT_DEL
         "^.*",  // STRING_LITERAL
     };
 
     public static final Hashtable<String, String> SINGLECOMMENTTOKENS = new Hashtable<String, String>() {{
-        put("^#", "SINGLE_LINE_COMMENT_DEL");
+        put("comment", "SINGLE_COMMENT_DEL");
         put("^.*", "STRING_LITERAL");
+    }};
+
+
+    public static final String[] MULTICOMMENTPATTERNLIST = {
+        "^[^#\r\n].*",  // STRING_LITERAL
+        "^[\n\r]*",  // NEWLINE
+    };
+
+    public static final Hashtable<String, String> MULTICOMMENTTOKENS = new Hashtable<String, String>() {{
+        put("^[^#\r\n].*", "STRING_LITERAL");
+        put("^[\n\r]*", "NEWLINE");
+        put("open_multi", "OPEN_MULTI_COMMENT_DEL");
+        put("close_multi", "CLOSE_MULTI_COMMENT_DEL");
     }};
 }
 
