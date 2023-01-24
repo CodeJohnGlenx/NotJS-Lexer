@@ -1,3 +1,8 @@
 '                                                 OPEN_SINGLE_QUOTE_DEL
 \t                                                HORIZONAL_TAB_ESC
 '                                                 CLOSE_SINGLE_QUOTE_DEL
+# this is a single comment                        SINGLE_LINE_COMMENT
+idkwhat                                           IDENTIFIER
+=                                                 ASSIGNMENT_OP
+5                                                 INT_LITERAL
+;                                                 SEMICOLON_DEL

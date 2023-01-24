@@ -244,6 +244,12 @@ public class Tokens {
         put("open_quote", "OPEN_SINGLE_QUOTE_DEL");
         put("close_quote", "CLOSE_SINGLE_QUOTE_DEL");
     }};
+
+
+    public static final String[] SCOMMENTPATTERNLIST = {
+        "^#",  // SINGLE_COMMENT_DEL
+        "^.*",  // STRING_LITERAL
+    };
 }
 
 
