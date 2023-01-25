@@ -94,13 +94,13 @@ public class Tokens {
         // punctuations
         "^[;]", // SEMICOLON_DEL
         "^[:]",  // COLON_DEL
-        "^[(]",  // OPEN_PARENTHESIS
-        "^[)]",  // CLOSE_PARENTHESIS
-        "^[{]",  // OPEN_CURLY_BRACKET
-        "^[}]",  // CLOSE_CURLY_BRACKET
+        "^[(]",  // OPEN_PARENTHESIS_DEL
+        "^[)]",  // CLOSE_PARENTHESIS_DEL
+        "^[{]",  // OPEN_CURLY_BRACKET_DEL
+        "^[}]",  // CLOSE_CURLY_BRACKET_DEL
         "^[?]",  // TERNARY_OP
-        "^\\[",  // OPEN_SQUARE_BRACKET
-        "^\\]",  // CLOSE_SQUARE_BRACKET
+        "^\\[",  // OPEN_SQUARE_BRACKET_DEL
+        "^\\]",  // CLOSE_SQUARE_BRACKET_DEL
         "^[,]",  // COMMA_DEL
 
         // whitespace
@@ -202,13 +202,13 @@ public class Tokens {
         // punctuations
         put("^[;]", "SEMICOLON_DEL");
         put("^[:]", "COLON_DEL");
-        put("^[(]", "OPEN_PARENTHESIS");
-        put("^[)]", "CLOSE_PARENTHESIS");
-        put("^[{]", "OPEN_CURLY_BRACKET");
-        put("^[}]", "CLOSE_CURLY_BRACKET");
+        put("^[(]", "OPEN_PARENTHESIS_DEL");
+        put("^[)]", "CLOSE_PARENTHESIS_DEL");
+        put("^[{]", "OPEN_CURLY_BRACKET_DEL");
+        put("^[}]", "CLOSE_CURLY_BRACKET_DEL");
         put("^[?]", "TERNARY_OP");
-        put("^\\[", "OPEN_SQUARE_BRACKET");
-        put("^\\]", "CLOSE_SQUARE_BRACKET");
+        put("^\\[", "OPEN_SQUARE_BRACKET_DEL");
+        put("^\\]", "CLOSE_SQUARE_BRACKET_DEL");
         put("^[,]", "COMMA_DEL");
 
         // whitespace
