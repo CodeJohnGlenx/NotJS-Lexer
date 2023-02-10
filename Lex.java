@@ -24,11 +24,17 @@ public class Lex {
             // perform scanning
             lexemeTokenList = scan(njsContent, Tokens.PATTERNLIST);
             if (lexemeTokenList != null) {
-                // write lexeme and token to SymbolTable.txt
+                // write lexeme and token to LexOut.txt
                 FileWriter lexWriter = new FileWriter("LexOut.txt");
+
+                // true output LexOutReal.txt
+                FileWriter lexRealWriter = new FileWriter("LexOut.nlex");
+
                 for (String[] lexemeToken: lexemeTokenList) {
                     lexWriter.write(String.format("%-50s%s\n", lexemeToken[0], lexemeToken[1]));
+                    lexRealWriter.write(String.format("%s,%s\n", lexemeToken[0], lexemeToken[1]));
                 }
+                lexRealWriter.close();
                 lexWriter.close();
             }
 

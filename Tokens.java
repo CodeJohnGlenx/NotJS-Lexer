@@ -9,11 +9,11 @@ public class Tokens {
         "^'''(.|[\r\n]|)*?'''",  // MULTI_LINE_COMMENT
 
         // data types
-        "^String",  // DATATYPE
-        "^int",  // DATATYPE
-        "^char",  // DATATYPE
-        "^float",  // DATATYPE
-        "^bool",   // DATATYPE
+        "^String",  // DATATYPE_KEY
+        "^int",  // DATATYPE_KEY
+        "^char",  // DATATYPE_KEY
+        "^float",  // DATATYPE_KEY
+        "^bool",   // DATATYPE_KEY
 
         // reserved word (for now)
         "^double",  // RESERVED_WORD
@@ -113,11 +113,11 @@ public class Tokens {
     // Token equivalent of regular expression
     public static final Hashtable<String, String> TOKEN = new Hashtable<String, String>() {{
         // data types
-        put("^String", "DATATYPE");
-        put("^int", "DATATYPE");
-        put("^char", "DATATYPE");
-        put("^float", "DATATYPE");
-        put("^bool", "DATATYPE");
+        put("^String", "DATATYPE_KEY");
+        put("^int", "DATATYPE_KEY");
+        put("^char", "DATATYPE_KEY");
+        put("^float", "DATATYPE_KEY");
+        put("^bool", "DATATYPE_KEY");
 
         // reserved word (for now)
         put("^double", "RESERVED_WORD");
@@ -191,13 +191,13 @@ public class Tokens {
         put("^=", "ASSIGNMENT_OP");
 
         // arithmetic operators        
-        put("^[+]", "ADDITION");  
-        put("^-", "SUBTRACTION");  
-        put("^[*][*]", "EXPONENTIATION"); 
-        put("^[*]", "MULTIPLICATION");  
-        put("^//", "FLOOR_DIVISION");    
-        put("^/", "DIVISION");  
-        put("^%", "MODULUS");  
+        put("^[+]", "ADDITION_OP");  
+        put("^-", "SUBTRACTION_OP");  
+        put("^[*][*]", "EXPONENTIATION_OP"); 
+        put("^[*]", "MULTIPLICATION_OP");  
+        put("^//", "FLOOR_DIVISION_OP");    
+        put("^/", "DIVISION_OP");  
+        put("^%", "MODULUS_OP");  
         
         // punctuations
         put("^[;]", "SEMICOLON_DEL");
